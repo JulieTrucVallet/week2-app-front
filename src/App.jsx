@@ -1,45 +1,32 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import './App.css'
+import { ServicesContext } from './context/servicesContext.jsx'
 
 function App() {
-  const [services, setServices] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
 
-  const fetchServices = async () => {
-    try{
-      const response = await axios.get(`http://localhost:8000/api/services`)
-      if(response.status === 200 ){
-        setServices(response.data)
-        setLoading(false)
-      }
-    }
-    catch(err){
-      console.log(err)
-      setError('Error fetching services')
-      setLoading(false)
-    }
-  }
+  const [services, setServices] = useContext(ServicesContext)
 
-  useEffect(() => {
-    fetchServices()
-  }, [])
 
   return (
     <>
-      <h1 class="text-3xl font-bold underline bg-sky-300">Hello this is my event APP</h1>
-      {services && !loading && services.map(service => {
-        return(
-          <>
-            <div className="grid grid-cols-3 gap-4">
-              <h2>{service.title}</h2>
-              <p>{service.description}</p>
-              <p>{service.price}</p>
+      <h1 className="text-3xl font-bold underline bg-sky-300">Hello this is my event APP</h1>
+      <div className='flex flex-wrap p-7 m-7 space-between'>
+      {services && services.map(service => {
+        return ( 
+            <div key={service._id} className="max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 p-4">
+              <h3 className="text-xl font-bold text-gray-800 mb-2">🎉 {service.title}</h3>
+              <p className="text-gray-600 mb-2">📌 <span className="font-semibold">Category:</span>{service.category}</p>
+              <p className="text-gray-700 mb-3">📖 <span className="font-semibold">Description:</span>{service.description}</p>
+              <p className="text-green-600 font-bold mb-2">💰 Price: {service.price}</p>
+              <p className="text-gray-500">📍 Address: {service.address}</p>
+
+              <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                Book Now
+              </button>
             </div>
-          </>
         )
       })}
+      </div>
     </>
   )
 }
