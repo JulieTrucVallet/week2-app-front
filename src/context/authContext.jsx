@@ -8,6 +8,13 @@ export const AuthController = ({children}) => {
     let navigate = useNavigate()
     const [isAuthenticated, setIsAuthenticated] = useState(false)
 
+    useEffect(() => {
+        let token = localStorage.getItem('token')
+        if(token) {
+            setIsAuthenticated(true)
+        }
+    }, [])
+
     const handleLogin = async (e, email, password) => {
         e.preventDefault()
         try {
@@ -23,6 +30,16 @@ export const AuthController = ({children}) => {
             if (err) {
                 alert(err.response.data)
             }
+        }
+    }
+
+    const handleLogout = async () => {
+        try{
+            localStorage. removeItem('token')
+            setIsAuthenticated(false)
+        }
+        catch(err){
+            console.log(err)
         }
     }
 
