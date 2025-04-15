@@ -1,10 +1,11 @@
-import { AuthContext } from " .. /context/authContext"
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
-
+import { useNavigate } from "react-router"
+import { AuthContext } from "../context/authContext"
 
 const Profile = () => {
-    const { tokenStorage } = useContext(AuthContext)
+    let navigate = useNavigate()
+    const [isAuthenticated] = useContext(AuthContext)
     const [userProfile, setUserProfile] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -14,7 +15,7 @@ const Profile = () => {
         try{
             const response = await axios.get(`http://localhost:8000/api/profile`, {
                 headers : {
-                    'Authorization' : `Bearer ${tokenStorage}`
+                    'Authorization' : `Bearer ${token}`
                 }
             })
             if(response.status === 200){
@@ -36,7 +37,7 @@ const Profile = () => {
         if(token){
             fetchUserProfile()
         }
-    }, [])
+    }, [isAuthenticated])
 
     return(
         <>

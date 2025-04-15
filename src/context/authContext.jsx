@@ -9,7 +9,6 @@ export const AuthController = ({children}) => {
     let navigate = useNavigate()
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [tokenStorage, setTokenStorage] = useState(null)
 
     useEffect(() => {
         setLoading(true)
@@ -17,7 +16,6 @@ export const AuthController = ({children}) => {
             const token = localStorage.getItem('token')
             if(token) {
                 setIsAuthenticated(true)
-                setTokenStorage(token)
             }
         }
         catch(error){
@@ -50,6 +48,7 @@ export const AuthController = ({children}) => {
         try{
             localStorage.removeItem('token')
             setIsAuthenticated(false)
+            navigate('/login')
         }
         catch(err){
             console.log(err)
