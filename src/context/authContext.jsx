@@ -1,17 +1,30 @@
 import axios from 'axios'
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+
 
 export const AuthContext = createContext(null)
 
 export const AuthController = ({children}) => {
     let navigate = useNavigate()
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [tokenStorage, setTokenStorage] = useState(null)
 
     useEffect(() => {
-        let token = localStorage.getItem('token')
-        if(token) {
-            setIsAuthenticated(true)
+        setLoading(true)
+        try{
+            const token = localStorage.getItem('token')
+            if(token) {
+                setIsAuthenticated(true)
+                setTokenStorage(token)
+            }
+        }
+        catch(error){
+            console.log('Error accessing localStorage:', error)
+        }
+        finally{
+            setLoading(false)
         }
     }, [])
 
@@ -35,7 +48,7 @@ export const AuthController = ({children}) => {
 
     const handleLogout = async () => {
         try{
-            localStorage. removeItem('token')
+            localStorage.removeItem('token')
             setIsAuthenticated(false)
         }
         catch(err){
@@ -44,8 +57,8 @@ export const AuthController = ({children}) => {
     }
 
     return(
-        <AuthContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
-            {children}
+        <AuthContext.Provider value={[isAuthenticated, setIsAuthenticated, handleLogin, handleLogout, tokenStorage]}>
+            {!loading && children}
         </AuthContext.Provider>
     )
 }

@@ -10,7 +10,7 @@ const NavBar = () => {
     console.log(isAuthenticated)
     return (
         <>
-            <h1>Hello there is {services?.length || 0} events</h1>
+            <h1>Hello there is {services.length} events</h1>
             <ul className='bg-gray-500 flex justify-center space-x-4'>
                 <Link to='/'><li>Home</li></Link>
                 {!isAuthenticated ? (
@@ -22,8 +22,9 @@ const NavBar = () => {
 
                     : (
                         <>
+                            <Link to='/addservice'><li>Add Service</li></Link>
                             <Link to='/profile'><li>Profile</li></Link>
-                            <Link to='/logout'><li>logout</li></Link>
+                            <li onClick={handleLogout} className='cursor-pointer'>Logout</li>
                         </>
                     )
                     }
