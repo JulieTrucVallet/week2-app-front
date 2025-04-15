@@ -31,7 +31,7 @@ const Profile = () => {
 
     useEffect(() => {
         if(!isAuthenticated){
-            Navigate('/login')
+            navigate('/login')
         }
         if(token){
             fetchUserProfile()
