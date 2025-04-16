@@ -6,11 +6,11 @@ import './index.css'
 import MyRouter from './MyRouter'
 
 createRoot(document.getElementById('root')).render(
-  <ServicesController>
-    <AuthController>
-      <BrowserRouter>
+  <BrowserRouter>
+    <ServicesController>
+      <AuthController>
         <MyRouter />
-      </BrowserRouter>,
-    </AuthController>
-  </ServicesController>
+      </AuthController>
+    </ServicesController>
+  </BrowserRouter>
 )

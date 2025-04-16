@@ -2,7 +2,6 @@ import axios from 'axios'
 import { createContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
-
 export const AuthContext = createContext(null)
 
 export const AuthController = ({children}) => {
@@ -12,16 +11,14 @@ export const AuthController = ({children}) => {
 
     useEffect(() => {
         setLoading(true)
-        try{
+        try {
             const token = localStorage.getItem('token')
-            if(token) {
+            if (token) {
                 setIsAuthenticated(true)
             }
-        }
-        catch(error){
+        } catch (error) {
             console.log('Error accessing localStorage:', error)
-        }
-        finally{
+        } finally {
             setLoading(false)
         }
     }, [])
@@ -30,33 +27,28 @@ export const AuthController = ({children}) => {
         e.preventDefault()
         try {
             const response = await axios.post(`http://localhost:8000/api/login`, { email, password })
-            if(response.status === 200){
+            if (response.status === 200) {
+                localStorage.setItem('token', response.data.token) // ← n'oublie pas de stocker le token
                 setIsAuthenticated(true)
                 alert(response.data.message)
                 navigate('/')
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err)
-            if (err) {
+            if (err.response) {
                 alert(err.response.data)
             }
         }
     }
 
-    const handleLogout = async () => {
-        try{
-            localStorage.removeItem('token')
-            setIsAuthenticated(false)
-            navigate('/login')
-        }
-        catch(err){
-            console.log(err)
-        }
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        setIsAuthenticated(false)
+        navigate('/login')
     }
 
-    return(
-        <AuthContext.Provider value={[isAuthenticated, setIsAuthenticated, handleLogin, handleLogout, tokenStorage]}>
+    return (
+        <AuthContext.Provider value={[isAuthenticated, setIsAuthenticated, handleLogin, handleLogout]}>
             {!loading && children}
         </AuthContext.Provider>
     )

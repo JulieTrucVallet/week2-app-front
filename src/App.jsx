@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import './App.css'
 import { ServicesContext } from './context/servicesContext.jsx'
 
@@ -22,7 +22,9 @@ function App() {
     }
   }
 
-  fetchAPI()
+  useEffect(() => {
+    fetchAPI()
+  }, [])
 
   return (
     <>
