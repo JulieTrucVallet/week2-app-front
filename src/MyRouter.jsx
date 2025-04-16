@@ -5,6 +5,9 @@ import { default as AddEvent, default as AddService } from './pages/AddService'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
+import ServiceDetails from './pages/ServiceDetails'
+import UserDetails from './pages/UserDetails'
+import Users from './pages/Users'
 import ProtectedRoute from './utils/ProtectedRoute'
 
 const MyRouter = () => {
@@ -26,6 +29,8 @@ const MyRouter = () => {
                         <AddService />
                     </ProtectedRoute>
                 } />
+                <Route path='/users' element={<Users />} />
+                <Route path='/user/:id' element={<UserDetails />} />
                 <Route path='/service/:id' element={<ServiceDetails />} />
                 <Route path='*' element={<p>404 not found</p>} />
             </Routes>
