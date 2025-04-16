@@ -15,7 +15,7 @@ const MyRouter = () => {
         <>
             <NavBar />
             <Routes>
-                <Routes exact path="/" element={<App />} />
+                <Route path="/" element={<App />} />
                 <Route path='/profile' element={
                     <ProtectedRoute>
                         <Profile />

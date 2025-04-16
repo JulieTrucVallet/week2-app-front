@@ -29,8 +29,9 @@ const Users = () => {
             {!loading && users && users.map (user => {
                 return (
                     <>
-                        <Link to={`/user/${user._id}`}></Link>
-                        <h1></h1>
+                        <Link to={`/user/${user._id}`}>
+                            <h1>{user.first_name} {user.last_name}</h1>
+                        </Link>
                     </>
                 )
             })

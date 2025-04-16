@@ -24,6 +24,7 @@ const NavBar = () => {
                         <>
                             <Link to='/addservice'><li>Add Service</li></Link>
                             <Link to='/profile'><li>Profile</li></Link>
+                            <Link to='/users'><li>Users</li></Link>
                             <li onClick={handleLogout} className='cursor-pointer'>Logout</li>
                         </>
                     )
