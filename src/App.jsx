@@ -1,38 +1,19 @@
-import axios from 'axios'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import './App.css'
 import { ServicesContext } from './context/servicesContext.jsx'
 
 function App() {
 
-  const [services, setServices] = useContext(ServicesContext)
-
-  const fetchAPI = async () => {
-    const token = localStorage.getItem(`token`)
-    try{
-      const response = await axios.get(`http://localhost:8000`, {
-        headers : {
-          'Authorization' : `Bearer ${token}`
-        }
-      })
-      console.log(response)
-    }
-    catch(err){
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    fetchAPI()
-  }, [])
+  const {services} = useContext(ServicesContext)
 
   return (
     <>
       <h1 className="text-3xl font-bold underline bg-sky-300">Hello this is my event APP</h1>
-      <div className='flex flex-wrap p-7 m-7 space-between'>
+      <div className='flex justify-center flex-wrap p-7 m-7 space-x-8 space-y-8'>
       {services && services.map(service => {
         return ( 
-            <div key={service._id} className="max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 p-4">
+          <Link key={service._id} to={`/service/${service._id}`}>
+            <div className="max-w-sm bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 p-4">
               <h3 className="text-xl font-bold text-gray-800 mb-2">🎉 {service.title}</h3>
               <p className="text-gray-600 mb-2">📌 <span className="font-semibold">Category:</span>{service.category}</p>
               <p className="text-gray-700 mb-3">📖 <span className="font-semibold">Description:</span>{service.description}</p>
@@ -43,6 +24,7 @@ function App() {
                 Book Now
               </button>
             </div>
+          </Link>
         )
       })}
       </div>
