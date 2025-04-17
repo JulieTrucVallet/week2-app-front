@@ -27,6 +27,8 @@ const ServiceDetails = () => {
         fetchServiceByID()
     }, [])
 
+    console.log(service)
+
     return(
         <>
             {!loading && service && (
@@ -36,7 +38,7 @@ const ServiceDetails = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Image placeholder */}
                         <div className="w-full h-64 bg-gray-100 rounded-xl flex items-center justify-center">
-                            <img className="text-gray-400" src={service.image ? `http://localhost:8000${service.image}` : `http://localhost:8000/public/images/default_event.jpg`} />
+                            <img className="text-gray-400" src={service.image ? `http://localhost:8000${service.image}` : `http://localhost:8000/images/default_event.jpg`} />
                         </div>
 
                         {/* Informations du service */}
