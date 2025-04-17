@@ -8,13 +8,15 @@ export const AuthController = ({children}) => {
     let navigate = useNavigate()
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [token, setToken] = useState(null)
 
     useEffect(() => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
-            if (token) {
+            const tokenStorage = localStorage.getItem('token')
+            if (tokenStorage) {
                 setIsAuthenticated(true)
+                setToken(tokenStorage)
             }
         } catch (error) {
             console.log('Error accessing localStorage:', error)
@@ -28,7 +30,8 @@ export const AuthController = ({children}) => {
         try {
             const response = await axios.post(`http://localhost:8000/api/login`, { email, password })
             if (response.status === 200) {
-                localStorage.setItem('token', response.data.token) // ← n'oublie pas de stocker le token
+                localStorage.setItem('token', response.data.token)
+                setToken(response.data.token)
                 setIsAuthenticated(true)
                 alert(response.data.message)
                 navigate('/')
@@ -43,12 +46,13 @@ export const AuthController = ({children}) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token')
+        setToken(null)
         setIsAuthenticated(false)
         navigate('/login')
     }
 
     return (
-        <AuthContext.Provider value={[isAuthenticated, setIsAuthenticated, handleLogin, handleLogout]}>
+        <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated, handleLogin, handleLogout, token}}>
             {!loading && children}
         </AuthContext.Provider>
     )

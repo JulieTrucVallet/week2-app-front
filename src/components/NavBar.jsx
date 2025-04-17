@@ -4,8 +4,8 @@ import { AuthContext } from '../context/authContext'
 import { ServicesContext } from '../context/servicesContext'
 
 const NavBar = () => {
-  const [services] = useContext(ServicesContext)
-  const [isAuthenticated,, , handleLogout] = useContext(AuthContext)
+  const { services } = useContext(ServicesContext)
+  const { isAuthenticated, handleLogout } = useContext(AuthContext)
 
   return (
     <>

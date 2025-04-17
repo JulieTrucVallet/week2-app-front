@@ -8,8 +8,8 @@ import { ServicesContext } from "../context/servicesContext"
 const AddService = () => {
     let navigate = useNavigate()
 
-    const { tokenStorage } = useContext(AuthContext)
-    const {fetchServices} = useContext(ServicesContext)
+    const { token } = useContext(AuthContext)
+    const { fetchServices } = useContext(ServicesContext)
 
     const [serviceInfo, setServiceInfo] = useState({
         title: '',
@@ -17,17 +17,29 @@ const AddService = () => {
         price: null,
         category: '',
         address: '',
-        availability: null,
+        availability: false,
         image: null
     })
 
     const handleServiceSubmit = async (e) => {
         e.preventDefault()
+
+        const formData = new FormData()
+        formData.append('title', serviceInfo.title)
+        formData.append('description', serviceInfo.description)
+        formData.append('price', serviceInfo.price)
+        formData.append('category', serviceInfo.category)
+        formData.append('address', serviceInfo.address)
+        formData.append('availability', serviceInfo.availability)
+        if (serviceInfo.image) {
+            formData.append('image', serviceInfo.image)
+        }
+
         try {
-            const response = await axios.post(`http://localhost:8000/api/services`, serviceInfo, {
+            const response = await axios.post(`http://localhost:8000/api/services`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${tokenStorage}`
+                    'Authorization': `Bearer ${token}`
                 }
             })
             if (response.status === 201) {
@@ -96,9 +108,9 @@ const AddService = () => {
             <div className="flex flex-col">
                 <label className="mb-1 font-medium text-gray-700">Availability</label>
                 <input
-                    type="text"
-                    className="input-style"
-                    onChange={e => setServiceInfo({ ...serviceInfo, availability: e.target.value })}
+                    type="checkbox"
+                    checked={serviceInfo.availability}
+                    onChange={e => setServiceInfo({ ...serviceInfo, availability: e.target.checked })}
                 />
             </div>
 
@@ -107,7 +119,7 @@ const AddService = () => {
                 <input
                     type="file"
                     className="input-style"
-                    onChange={e => setServiceInfo({ ...serviceInfo, image: e.target.value })}
+                    onChange={e => setServiceInfo({ ...serviceInfo, image: e.target.files[0] })}
                 />
             </div>
 
